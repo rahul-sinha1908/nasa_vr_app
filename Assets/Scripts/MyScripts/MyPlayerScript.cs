@@ -4,39 +4,56 @@ using UnityEngine;
 using MyGame;
 
 [RequireComponent(typeof(NetworkView))]
-[RequireComponent(typeof(CharacterController))]
 public class MyPlayerScript : MonoBehaviour {
-	
 	public LayerMask collidingLayer;
+	public float speed=5;
 	private NetworkView netView;
-	private CharacterController controller;
+	public GameObject myTarget;
+	private Animator anim;
+	public CharacterController controller;
 	// Use this for initialization
 	void Start () {
 		netView=GetComponent<NetworkView>();
-		controller=GetComponent<CharacterController>();
+		anim=GetComponent<Animator>();
+		// if(!netView.isMine)
+		// 	myTarget.SetActive(false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		// if(!netView.isMine)
+		// 	return;
+		castRays();
+		lookTowards();
 	}
 
 	private void castRays(){
-		Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+		
 		RaycastHit outP;
-		if(Physics.Raycast(ray, out outP, 1000, collidingLayer)){
+		if(Physics.Raycast(myTarget.transform.position, myTarget.transform.forward, out outP, 1000, collidingLayer)){
+			//Dev.log(Tag.MyPlayerScript, "Its here : 1");
 			if(outP.collider.gameObject.layer==LayerMask.NameToLayer("Floor")){
+				Dev.log(Tag.MyPlayerScript, "Its here : "+outP.point);
 				movePlayer(outP.point);
 			}else if(outP.collider.gameObject.layer==LayerMask.NameToLayer("Menu")){
-
+					
 			}else if(outP.collider.gameObject.layer==LayerMask.NameToLayer("Earth")){
 				
 			}else if(outP.collider.gameObject.layer==LayerMask.NameToLayer("")){
 				
 			}
+		}else{
+			anim.SetBool("Walk", false);
 		}
 	}
 	private void movePlayer(Vector3 pos){
-
+		controller.SimpleMove(transform.forward* speed);
+		anim.SetBool("Walk", true);
+	}
+	private void lookTowards(){
+		Quaternion quad = myTarget.transform.rotation;
+		quad.x=0;
+		quad.z=0;
+		transform.rotation=quad;
 	}
 }

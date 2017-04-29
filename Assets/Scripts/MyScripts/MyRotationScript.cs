@@ -27,7 +27,8 @@ public class MyRotationScript : MonoBehaviour {
 		if(ind == rotationPos.Capacity){
 			ind=0;
 		}
-		transform.position=GameMethods.getProjectionWithSpeed(rotationPos[ind].position, transform.position, speed, Time.deltaTime);
-		cameraObj.LookAt(lookAtPos);
+		//transform.position=GameMethods.getProjectionWithSpeed(rotationPos[ind].position, transform.position, speed, Time.deltaTime);
+		//cameraObj.LookAt(lookAtPos);
+		
 	}
 }
