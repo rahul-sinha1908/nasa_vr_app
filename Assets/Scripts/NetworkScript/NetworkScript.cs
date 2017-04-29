@@ -9,9 +9,9 @@ using System;
 [RequireComponent(typeof(NetworkView))]
 public class NetworkScript : MonoBehaviour {
 
-	public Transform spawingPos;
-	public NetworkView netView;
-	public GameObject buttonHolder, buttonPrefab, playerPrefab;
+	//public Transform spawingPos;
+	private NetworkView netView;
+	//public GameObject buttonHolder, buttonPrefab, playerPrefab;
 	private int portNum;
 	private string registeredName, gameName;
 	
@@ -39,8 +39,8 @@ public class NetworkScript : MonoBehaviour {
 
 	private void InstantiatePlayer(){
 		Camera cam =Camera.main;
-		Network.Instantiate(playerPrefab, spawingPos.position, Quaternion.identity, 0);
-		cam.enabled=false;
+		//Network.Instantiate(playerPrefab, spawingPos.position, Quaternion.identity, 0);
+		//cam.enabled=false;
 	}
 
 	/// <summary>
@@ -73,9 +73,9 @@ public class NetworkScript : MonoBehaviour {
 
     private void addButton(HostData h)
     {
-        GameObject go = GameObject.Instantiate(buttonPrefab,Vector3.zero, Quaternion.identity, buttonHolder.transform);
-		Button but=go.GetComponent<Button>();
-		but.onClick.AddListener(()=>callOnButtonPress(h));
+        //GameObject go = GameObject.Instantiate(buttonPrefab,Vector3.zero, Quaternion.identity, buttonHolder.transform);
+		//Button but=go.GetComponent<Button>();
+		//but.onClick.AddListener(()=>callOnButtonPress(h));
     }
 
 	private void callOnButtonPress(HostData h){

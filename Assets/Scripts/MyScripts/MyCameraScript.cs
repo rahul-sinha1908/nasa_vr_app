@@ -14,7 +14,8 @@ public class MyCameraScript : MonoBehaviour {
 			myPlayer = (Transform) Network.Instantiate(myPlayerPrefab,hostSpawnPosition.position, Quaternion.identity,0);
 		else
 			myPlayer = (Transform) Network.Instantiate(myPlayerPrefab,clientSpawnPosition.position, Quaternion.identity,0);
-
+		
+		myPlayer.FindChild("SS").GetComponent<MyPlayerScript>().initiate(gameObject);
 	}
 	
 	// Update is called once per frame
