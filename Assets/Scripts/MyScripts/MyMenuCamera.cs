@@ -8,6 +8,7 @@ public class MyMenuCamera : MonoBehaviour {
 
 	public LayerMask colLayer;
 	public Transform target, canvas;
+	public NetworkScript netScript;
 	private float timeHost, timeConnect;
 	// Use this for initialization
 	void Start () {
@@ -47,10 +48,14 @@ public class MyMenuCamera : MonoBehaviour {
 	private void host(){
 		canvas.gameObject.SetActive(false);
 		Dev.log(Tag.MyPlayerScript, "Hosting Successfull");
+		netScript.createServer();
+		//gameObject.SetActive(false);
 	}
 	private void connect(){
 		canvas.gameObject.SetActive(false);
 		Dev.log(Tag.MyPlayerScript, "Connecting Successfull");
+		netScript.connectToSever();
+		//gameObject.SetActive(false);
 		//TODO Connect to the server
 	}
 }
