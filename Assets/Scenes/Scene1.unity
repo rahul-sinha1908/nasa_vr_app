@@ -1902,11 +1902,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee5aaf589486d4c7686037f57cc87e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawingPos: {fileID: 0}
-  netView: {fileID: 2034788446}
-  buttonHolder: {fileID: 0}
-  buttonPrefab: {fileID: 0}
-  playerPrefab: {fileID: 0}
 --- !u!148 &2034788446
 NetworkView:
   m_ObjectHideFlags: 0

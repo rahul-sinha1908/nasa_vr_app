@@ -34,6 +34,7 @@ public class NetworkScript : MonoBehaviour {
 
 	public void createServer(){
 		Network.InitializeServer(4, portNum, true);
+
 		MasterServer.RegisterHost(registeredName, gameName, "Hey Join the game");
 	}
 

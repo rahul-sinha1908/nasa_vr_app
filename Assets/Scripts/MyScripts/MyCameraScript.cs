@@ -10,16 +10,24 @@ public class MyCameraScript : MonoBehaviour {
 	public Transform lookDir;
 	// Use this for initialization
 	void Start () {
+		GameObject go;
 		if(GameRunningScript.getInstance().isServer)
-			myPlayer = (Transform) Network.Instantiate(myPlayerPrefab,hostSpawnPosition.position, Quaternion.identity,0);
+			go = (GameObject) Network.Instantiate(myPlayerPrefab,hostSpawnPosition.position, Quaternion.identity,0);
 		else
-			myPlayer = (Transform) Network.Instantiate(myPlayerPrefab,clientSpawnPosition.position, Quaternion.identity,0);
-		
-		myPlayer.FindChild("SS").GetComponent<MyPlayerScript>().initiate(gameObject);
+			go = (GameObject) Network.Instantiate(myPlayerPrefab,clientSpawnPosition.position, Quaternion.identity,0);
+		myPlayer =  GameObject.Instantiate(myPlayerPrefab,clientSpawnPosition.position, Quaternion.identity);
+		Transform game = myPlayer.FindChild("SS");
+		if(game!=null)
+			game.GetComponent<MyPlayerScript>().initiate(GetComponent<Transform>().FindChild("LookDir").gameObject);
+			//game.GetComponent<MyPlayerScript>().initiate(gameObject);
+		else
+			Dev.log(Tag.MyPlayerScript, "Error Cant Find");
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if(myPlayer==null)
+			return;
 		Vector3 vect = myPlayer.position;
 		vect.y=transform.position.y;
 		transform.position=vect;

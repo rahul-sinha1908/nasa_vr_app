@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyGame;
 
-[RequireComponent(typeof(NetworkView))]
 public class MyPlayerScript : MonoBehaviour {
 	public LayerMask collidingLayer;
 	public float speed=5;
@@ -22,8 +21,8 @@ public class MyPlayerScript : MonoBehaviour {
 	void Update () {
 		if(!netView.isMine)
 			return;
-		castRays();
 		lookTowards();
+		castRays();
 	}
 
 	public void initiate(GameObject obj){
@@ -33,7 +32,7 @@ public class MyPlayerScript : MonoBehaviour {
 		
 		RaycastHit outP;
 		if(Physics.Raycast(myTarget.transform.position, myTarget.transform.forward, out outP, 1000, collidingLayer)){
-			//Dev.log(Tag.MyPlayerScript, "Its here : 1");
+			Dev.log(Tag.MyPlayerScript, "Its here : 1");
 			if(outP.collider.gameObject.layer==LayerMask.NameToLayer("Floor")){
 				Dev.log(Tag.MyPlayerScript, "Its here : "+outP.point);
 				movePlayer(outP.point);
@@ -50,7 +49,8 @@ public class MyPlayerScript : MonoBehaviour {
 		}
 	}
 	private void movePlayer(Vector3 pos){
-		controller.SimpleMove(transform.forward* speed);
+		Dev.log(Tag.MyPlayerScript,"Vector Pos : " +myGame.transform.forward * speed);
+		myGame.transform.Translate(myGame.transform.forward*speed*Time.deltaTime);
 		anim.SetBool("Walk", true);
 		netView.RPC("RPCCallMethod", RPCMode.Others,new object[]{true});
 	}
