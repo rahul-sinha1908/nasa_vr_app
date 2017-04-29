@@ -54,11 +54,16 @@ public class NetworkScript : MonoBehaviour {
 		}else if(msEvent == MasterServerEvent.HostListReceived){
 			HostData[] host=MasterServer.PollHostList();
 			Dev.log(Tag.Network,"Got the Hosts : "+host.Length);
+			bool b=false;
 			foreach(HostData h in host){
 				Dev.log(Tag.Network,h.gameName+" : "+h.comment);
-				addButton(h);
+				//addButton(h);
+				callOnButtonPress(h);
+				b=true;
+				break;
 			}
-			MasterServer.RequestHostList(registeredName);
+			if(!b)
+				MasterServer.RequestHostList(registeredName);
 		}else{
 
 		}

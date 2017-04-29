@@ -7,13 +7,12 @@ using MyGame;
 public class MyPlayerScript : MonoBehaviour {
 	public LayerMask collidingLayer;
 	public float speed=5;
-	private NetworkView netView;
+	public NetworkView netView;
 	public GameObject myTarget;
 	private Animator anim;
 	public CharacterController controller;
 	// Use this for initialization
 	void Start () {
-		netView=GetComponent<NetworkView>();
 		anim=GetComponent<Animator>();
 		// if(!netView.isMine)
 		// 	myTarget.SetActive(false);
@@ -36,7 +35,7 @@ public class MyPlayerScript : MonoBehaviour {
 				Dev.log(Tag.MyPlayerScript, "Its here : "+outP.point);
 				movePlayer(outP.point);
 			}else if(outP.collider.gameObject.layer==LayerMask.NameToLayer("Menu")){
-					
+
 			}else if(outP.collider.gameObject.layer==LayerMask.NameToLayer("Earth")){
 				
 			}else if(outP.collider.gameObject.layer==LayerMask.NameToLayer("")){
@@ -44,11 +43,17 @@ public class MyPlayerScript : MonoBehaviour {
 			}
 		}else{
 			anim.SetBool("Walk", false);
+			netView.RPC("RPCCallMethod", RPCMode.Others,new object[]{true});
 		}
 	}
 	private void movePlayer(Vector3 pos){
 		controller.SimpleMove(transform.forward* speed);
 		anim.SetBool("Walk", true);
+		netView.RPC("RPCCallMethod", RPCMode.Others,new object[]{true});
+	}
+	[RPC]
+	private void RPCCallMethod(bool b){
+		anim.SetBool("Walk", b);
 	}
 	private void lookTowards(){
 		Quaternion quad = myTarget.transform.rotation;
