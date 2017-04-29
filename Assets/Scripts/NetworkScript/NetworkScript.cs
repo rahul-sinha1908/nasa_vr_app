@@ -1,15 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using MyGame;
 using System;
 
 [RequireComponent(typeof(NetworkView))]
 public class NetworkScript : MonoBehaviour {
 
+	public Transform spawingPos;
 	public NetworkView netView;
+	public GameObject buttonHolder, buttonPrefab, playerPrefab;
 	private int portNum;
 	private string registeredName, gameName;
+	
 	// Use this for initialization
 	void Start () {
 		netView=GetComponent<NetworkView>();
@@ -27,17 +31,15 @@ public class NetworkScript : MonoBehaviour {
 		MasterServer.RequestHostList(registeredName);
 	}
 
-	public void makeHost(){
+	public void createServer(){
 		Network.InitializeServer(4, portNum, true);
 		MasterServer.RegisterHost(registeredName, gameName, "Hey Join the game");
 	}
 
-	private void takeMeAsServer(){
-		
-	}
-
-	private void takeMeAsHost(){
-
+	private void InstantiatePlayer(){
+		Camera cam =Camera.main;
+		Network.Instantiate(playerPrefab, spawingPos.position, Quaternion.identity, 0);
+		cam.enabled=false;
 	}
 
 	/// <summary>
@@ -64,8 +66,14 @@ public class NetworkScript : MonoBehaviour {
 
     private void addButton(HostData h)
     {
-        
+        GameObject go = GameObject.Instantiate(buttonPrefab,Vector3.zero, Quaternion.identity, buttonHolder.transform);
+		Button but=go.GetComponent<Button>();
+		but.onClick.AddListener(()=>callOnButtonPress(h));
     }
+
+	private void callOnButtonPress(HostData h){
+		Network.Connect(h);
+	}
 
     /// <summary>
     /// Called on the server whenever a Network.InitializeServer was invoked and has completed.

@@ -6,6 +6,8 @@ using MyGame;
 public class MyRotationScript : MonoBehaviour {
 
 	public List<Transform> rotationPos;
+	public Transform lookAtPos;
+	public Transform cameraObj;
 	private int ind;
 	public float speed=20;
 	// Use this for initialization
@@ -26,6 +28,6 @@ public class MyRotationScript : MonoBehaviour {
 			ind=0;
 		}
 		transform.position=GameMethods.getProjectionWithSpeed(rotationPos[ind].position, transform.position, speed, Time.deltaTime);
-
+		cameraObj.LookAt(lookAtPos);
 	}
 }
