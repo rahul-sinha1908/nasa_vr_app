@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyGame;
 
 public class MyCameraScript : MonoBehaviour {
 
 	public Transform myPlayer;
+	public Transform lookDir;
 	// Use this for initialization
 	void Start () {
 		

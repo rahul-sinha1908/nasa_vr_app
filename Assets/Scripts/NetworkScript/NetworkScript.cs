@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using MyGame;
 using System;
 
@@ -50,6 +51,7 @@ public class NetworkScript : MonoBehaviour {
 	{
 		if(msEvent == MasterServerEvent.RegistrationSucceeded){
 			Dev.log(Tag.Network,"Successfully Registered");
+			GameRunningScript.getInstance().isServer=true;
 			//MasterServer.RequestHostList(registeredName);
 		}else if(msEvent == MasterServerEvent.HostListReceived){
 			HostData[] host=MasterServer.PollHostList();
@@ -77,6 +79,7 @@ public class NetworkScript : MonoBehaviour {
     }
 
 	private void callOnButtonPress(HostData h){
+		GameRunningScript.getInstance().isServer=false;
 		Network.Connect(h);
 	}
 
@@ -94,6 +97,11 @@ public class NetworkScript : MonoBehaviour {
 	/// <param name="player">The NetworkPlayer which just connected.</param>
 	void OnPlayerConnected(NetworkPlayer player)
 	{
-		
+		netView.RPC("openScene", RPCMode.AllBuffered, new object[]{});
+	}
+
+	[RPC]
+	private void openScene(){
+		SceneManager.LoadScene("InteriorEnvironment");
 	}
 }

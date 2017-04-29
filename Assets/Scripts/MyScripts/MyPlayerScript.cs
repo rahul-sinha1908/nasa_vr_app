@@ -8,7 +8,7 @@ public class MyPlayerScript : MonoBehaviour {
 	public LayerMask collidingLayer;
 	public float speed=5;
 	public NetworkView netView;
-	public GameObject myTarget;
+	public GameObject myTarget, myGame;
 	private Animator anim;
 	public CharacterController controller;
 	// Use this for initialization
@@ -26,6 +26,9 @@ public class MyPlayerScript : MonoBehaviour {
 		lookTowards();
 	}
 
+	public void initiate(GameObject obj){
+		myTarget=obj;
+	}
 	private void castRays(){
 		
 		RaycastHit outP;
@@ -59,6 +62,6 @@ public class MyPlayerScript : MonoBehaviour {
 		Quaternion quad = myTarget.transform.rotation;
 		quad.x=0;
 		quad.z=0;
-		transform.rotation=quad;
+		myGame.transform.rotation=quad;
 	}
 }
