@@ -21,8 +21,8 @@ public class MyPlayerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		// if(!netView.isMine)
-		// 	return;
+		if(!netView.isMine)
+			return;
 		lookTowards();
 		castRays();
 	}

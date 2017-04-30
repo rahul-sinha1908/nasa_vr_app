@@ -11,11 +11,15 @@ public class MyCameraScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GameObject go;
-		if(GameRunningScript.getInstance().isServer)
-			go = (GameObject) Network.Instantiate(myPlayerPrefab,hostSpawnPosition.position, Quaternion.identity,0);
-		else
-			go = (GameObject) Network.Instantiate(myPlayerPrefab,clientSpawnPosition.position, Quaternion.identity,0);
-		myPlayer =  GameObject.Instantiate(myPlayerPrefab,clientSpawnPosition.position, Quaternion.identity);
+		if(GameRunningScript.getInstance().isServer){
+			Dev.log(Tag.MyPlayerScript, "Server Connected");
+			myPlayer = (Transform) Network.Instantiate(myPlayerPrefab,hostSpawnPosition.position, Quaternion.identity,0);
+		}else{
+			Dev.log(Tag.MyPlayerScript, "Client Connected");
+			myPlayer = (Transform) Network.Instantiate(myPlayerPrefab,clientSpawnPosition.position, Quaternion.identity,0);
+		}
+		//myPlayer =  GameObject.Instantiate(myPlayerPrefab,clientSpawnPosition.position, Quaternion.identity);
+		//myPlayer = go.transform;
 		if(myPlayer!=null)
 			myPlayer.GetComponent<MyPlayerScript>().initiate(GetComponent<Transform>().FindChild("LookDir").gameObject);
 			//game.GetComponent<MyPlayerScript>().initiate(gameObject);
