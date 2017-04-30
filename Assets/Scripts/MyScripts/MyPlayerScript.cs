@@ -11,24 +11,30 @@ public class MyPlayerScript : MonoBehaviour {
 	public GameObject myTarget;
 	private Animator anim;
 	public CharacterController controller;
+	public Transform popUp;
+	public bool tbol, bol;
 	// Use this for initialization
 	void Start () {
 		anim=GetComponent<Animator>();
 		netView=GetComponent<NetworkView>();
 		// if(!netView.isMine)
 		// 	myTarget.SetActive(false);
+		tbol=false;
+		bol=false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		//TOOD Remove Comments from here.
 		if(!netView.isMine)
 			return;
 		lookTowards();
 		castRays();
 	}
 
-	public void initiate(GameObject obj){
+	public void initiate(GameObject obj, Transform pop){
 		myTarget=obj;
+		popUp=pop;
 	}
 	private void castRays(){
 		
@@ -38,8 +44,10 @@ public class MyPlayerScript : MonoBehaviour {
 			if(outP.collider.gameObject.layer==LayerMask.NameToLayer("Floor")){
 				Dev.log(Tag.MyPlayerScript, "Its here : "+outP.point);
 				movePlayer(outP.point);
-			}else if(outP.collider.gameObject.layer==LayerMask.NameToLayer("Menu")){
-
+			}else if(outP.collider.gameObject.layer==LayerMask.NameToLayer("Moon")){
+				Dev.log(Tag.MyPlayerScript, "Its on moon");
+				tbol=true;
+				lookingSame();
 			}else if(outP.collider.gameObject.layer==LayerMask.NameToLayer("Earth")){
 				
 			}else if(outP.collider.gameObject.layer==LayerMask.NameToLayer("")){
@@ -48,6 +56,14 @@ public class MyPlayerScript : MonoBehaviour {
 		}else{
 			anim.SetBool("Walk", false);
 			netView.RPC("RPCCallMethod", RPCMode.Others,new object[]{true});
+			tbol=false;
+			lookingSame();
+		}
+	}
+	private void lookingSame(){
+		if(tbol!=bol){
+			bol=tbol;
+			netView.RPC("RPCLookingSame", RPCMode.AllBuffered, new object[]{bol});
 		}
 	}
 	private void movePlayer(Vector3 pos){
@@ -64,6 +80,23 @@ public class MyPlayerScript : MonoBehaviour {
 	private void RPCCallMethod(bool b){
 		anim.SetBool("Walk", b);
 	}
+
+	[RPC]
+	private void RPCLookingSame(bool b){
+		if(netView.isMine){
+			GameRunningScript.getInstance().localLooking=true;
+		}else{
+			GameRunningScript.getInstance().netLooking=true;
+		}
+		checkDisplay();
+	}
+	private void checkDisplay(){
+		if(GameRunningScript.getInstance().localLooking && GameRunningScript.getInstance().netLooking){
+			popUp.gameObject.SetActive(true);
+		}else{
+			popUp.gameObject.SetActive(false);
+		}
+	}
 	private void lookTowards(){
 		Quaternion quad = myTarget.transform.rotation;
 		quad.x=0;
@@ -71,4 +104,3 @@ public class MyPlayerScript : MonoBehaviour {
 		transform.rotation=quad;
 	}
 }
-
