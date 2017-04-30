@@ -7,20 +7,22 @@ public class MyPlayerScript : MonoBehaviour {
 	public LayerMask collidingLayer;
 	public float speed=5;
 	public NetworkView netView;
-	public GameObject myTarget, myGame;
+	//public GameObject myTarget, myGame;
+	public GameObject myTarget;
 	private Animator anim;
 	public CharacterController controller;
 	// Use this for initialization
 	void Start () {
 		anim=GetComponent<Animator>();
+		netView=GetComponent<NetworkView>();
 		// if(!netView.isMine)
 		// 	myTarget.SetActive(false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(!netView.isMine)
-			return;
+		// if(!netView.isMine)
+		// 	return;
 		lookTowards();
 		castRays();
 	}
@@ -49,9 +51,13 @@ public class MyPlayerScript : MonoBehaviour {
 		}
 	}
 	private void movePlayer(Vector3 pos){
-		Dev.log(Tag.MyPlayerScript,"Vector Pos : " +myGame.transform.forward * speed);
-		myGame.transform.Translate(myGame.transform.forward*speed*Time.deltaTime);
+		Dev.log(Tag.MyPlayerScript,"Vector Pos : " +transform.forward * speed);
+		
+		// Vector3 ini = transform.position;
+		// controller.SimpleMove(myGame.transform.forward);
 		anim.SetBool("Walk", true);
+		// transform.position = new Vector3(0, transform.position.y, 0);
+		// myGame.transform.position = new Vector3(ini.x, myGame.transform.position.y, ini.z);
 		netView.RPC("RPCCallMethod", RPCMode.Others,new object[]{true});
 	}
 	[RPC]
@@ -62,6 +68,7 @@ public class MyPlayerScript : MonoBehaviour {
 		Quaternion quad = myTarget.transform.rotation;
 		quad.x=0;
 		quad.z=0;
-		myGame.transform.rotation=quad;
+		transform.rotation=quad;
 	}
 }
+

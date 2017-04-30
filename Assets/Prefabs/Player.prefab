@@ -2207,7 +2207,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: ed61bf7b52e2c44a7b2ea5a685514905, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -2821,7 +2821,7 @@ CharacterController:
   m_GameObject: {fileID: 1663368945684548}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Height: 2
   m_Radius: 0.5

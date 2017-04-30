@@ -16,9 +16,8 @@ public class MyCameraScript : MonoBehaviour {
 		else
 			go = (GameObject) Network.Instantiate(myPlayerPrefab,clientSpawnPosition.position, Quaternion.identity,0);
 		myPlayer =  GameObject.Instantiate(myPlayerPrefab,clientSpawnPosition.position, Quaternion.identity);
-		Transform game = myPlayer.FindChild("SS");
-		if(game!=null)
-			game.GetComponent<MyPlayerScript>().initiate(GetComponent<Transform>().FindChild("LookDir").gameObject);
+		if(myPlayer!=null)
+			myPlayer.GetComponent<MyPlayerScript>().initiate(GetComponent<Transform>().FindChild("LookDir").gameObject);
 			//game.GetComponent<MyPlayerScript>().initiate(gameObject);
 		else
 			Dev.log(Tag.MyPlayerScript, "Error Cant Find");
